@@ -3,6 +3,12 @@
 **TanStack Query** (formely known as **React Query**).
 The goal of this repository is to understand both basic and advanced concepts such as `data fetching`, `cache`, `mutation`, and `pagination`.
 
+## Core Concepts
+
+- `Query` - Handles _fetching_ and _caching_ of data automatically.
+- `Mutation` - Manages _creating_, _updating_, or _deleting_ data on the server.
+- `Query Invalidation` - Ensures data stays fresh by _refetching_ when dependencies change.
+
 ## Install TanStack Query
 
 ```bash

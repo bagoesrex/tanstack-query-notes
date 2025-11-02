@@ -24,3 +24,18 @@ package source: [@tanstack/react-query](https://www.npmjs.com/package/@tanstack/
   - `staleTime: 2 * 60 * 1000` → data stays fresh for 2 minutes.
   - `staleTime: Infinity` → data won’t refetch automatically until the query is manually invalidated.
   - `staleTime: 'static'` → never refetch, even after invalidation.
+
+## Refetch Behavior
+
+A stale query will automatically refetch when:
+
+- A new component mounts using the query.
+- The browser window regains focus.
+- The network reconnects.
+
+You can customize this behavior with:
+
+- `refetchOnMount`
+- `refetchOnWindowFocus`
+- `refetchOnReconnect`
+- `refetchInterval` → schedules periodic refetching (independent from `staleTime`).

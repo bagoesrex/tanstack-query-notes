@@ -12,13 +12,19 @@ export function useCharacters() {
             console.log("Data fetched!");
             return data;
         },
-        // data stays fresh for 2 minutes.
+        // -- data stays fresh for 2 minutes. --
         // staleTime: 1000 * 60 * 2,
 
-        // data won’t refetch automatically until the query is manually invalidated.
+        // -- data won’t refetch automatically until the query is manually invalidated. --
         // staleTime: Infinity,
 
-        // never refetch, even after invalidation.
+        // -- never refetch, even after invalidation. --
         // staleTime: 'static'
+
+        // -- refetch behavior --
+        // refetchOnMount: true,
+        // refetchOnWindowFocus: true,
+        // refetchOnReconnect: true,
+        // refetchInterval: 5000,
     });
 }

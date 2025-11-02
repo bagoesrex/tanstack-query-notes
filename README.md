@@ -43,5 +43,12 @@ You can customize this behavior with:
 ## Cache & Garbage Collection
 
 - Queries without any active instances become **inactive**, but remain cached.
-- Default cache removal time (`gcTime`) = **5 minutes (1000 * 60 * 5)**.
+- Default cache removal time `(gcTime) = 5 minutes (1000 * 60 * 5)`.
 - You can adjust this as needed.
+
+## Error & Retry
+
+- Failed queries are **automatically retried 3 times with exponential backoff delay**.
+- You can modify this behavior with:
+  - `retry`
+  - `retryDelay`

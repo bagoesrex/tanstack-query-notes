@@ -12,22 +12,22 @@ export function useCharacters() {
             console.log("Data fetched!");
             return data;
         },
-        // -- data stays fresh for 2 minutes. --
-        // staleTime: 1000 * 60 * 2,
-
-        // -- data won’t refetch automatically until the query is manually invalidated. --
-        // staleTime: Infinity,
-
-        // -- never refetch, even after invalidation. --
-        // staleTime: 'static'
+        // -- data fetching & staleness --
+        // staleTime: 1000 * 60 * 2, // data stays fresh for 2 minutes
+        // staleTime: Infinity, // data won’t refetch automatically until the query is manually invalidated
+        // staleTime: 'static', // never refetch, even after invalidation
 
         // -- refetch behavior --
-        // refetchOnMount: true,
-        // refetchOnWindowFocus: true,
-        // refetchOnReconnect: true,
-        // refetchInterval: 5000,
+        // refetchOnMount: true, // refetch when a component using this query mounts
+        // refetchOnWindowFocus: true, // refetch when the browser window regains focus
+        // refetchOnReconnect: true, // refetch when the network connection is restored
+        // refetchInterval: 5000, // automatically refetch every 5 seconds regardless of staleTime
 
         // -- cache & garbage collection --
-        // gcTime: 1000 * 60 * 5
+        // gcTime: 1000 * 60 * 5, // inactive queries are removed from cache after 5 minutes
+
+        // -- error & retry --
+        // retry: 3, // retry failed requests up to 3 times before showing an error
+        // retryDelay: 1000 * 60 * 2, // wait 2 minutes before the next retry attempt
     });
 }

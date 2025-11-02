@@ -1,15 +1,9 @@
 "use client"
 
-import { useQuery } from "@tanstack/react-query"
+import { useCharacters } from "@/hooks/use-characters"
 
 export default function Home() {
-  const { isPending, error, data } = useQuery({
-    queryKey: ['repoData'],
-    queryFn: () =>
-      fetch('https://api.github.com/repos/TanStack/query').then((res) =>
-        res.json(),
-      ),
-  })
+  const { isPending, error, data } = useCharacters()
 
   if (isPending) return 'Loading...'
 
@@ -17,11 +11,7 @@ export default function Home() {
 
   return (
     <div>
-      <h1>{data.name}</h1>
-      <p>{data.description}</p>
-      <strong>👀 {data.subscribers_count}</strong>{' '}
-      <strong>✨ {data.stargazers_count}</strong>{' '}
-      <strong>🍴 {data.forks_count}</strong>
+      <h1>{JSON.stringify(data.characters[4].name)}</h1>
     </div>
   )
 }

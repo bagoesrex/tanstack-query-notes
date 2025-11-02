@@ -1,9 +1,14 @@
 "use client"
 
+import { useEffect } from "react"
 import { useCharacters } from "@/hooks/use-characters"
 
 export default function Home() {
-  const { isPending, error, data } = useCharacters()
+  const { fetchStatus, isPending, error, data } = useCharacters()
+
+  useEffect(() => {
+    console.log("Fetch status changed:", fetchStatus)
+  }, [fetchStatus])
 
   if (isPending) return 'Loading...'
 
@@ -11,7 +16,8 @@ export default function Home() {
 
   return (
     <div>
-      <h1>{JSON.stringify(data.characters[4].name)}</h1>
+      <h1>{data?.characters[4]?.name}</h1>
+      <p>Fetch Status: {fetchStatus}</p>
     </div>
   )
 }

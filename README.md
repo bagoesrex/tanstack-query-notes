@@ -52,3 +52,9 @@ You can customize this behavior with:
 - You can modify this behavior with:
   - `retry`
   - `retryDelay`
+
+## Structural Sharing (Performance Optimization)
+
+- TanStack Query compares `old` and `new` results using **structural sharing** (deep comparison of values, not references).
+- If data hasn’t changed, the reference remains the same → improves performance with `useMemo`/`useCallback`.
+- Can be disabled or customized via `config.structuralSharing`.

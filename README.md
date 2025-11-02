@@ -39,3 +39,9 @@ You can customize this behavior with:
 - `refetchOnWindowFocus`
 - `refetchOnReconnect`
 - `refetchInterval` → schedules periodic refetching (independent from `staleTime`).
+
+## Cache & Garbage Collection
+
+- Queries without any active instances become **inactive**, but remain cached.
+- Default cache removal time (`gcTime`) = **5 minutes (1000 * 60 * 5)**.
+- You can adjust this as needed.

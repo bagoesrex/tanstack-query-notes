@@ -26,5 +26,8 @@ export function useCharacters() {
         // refetchOnWindowFocus: true,
         // refetchOnReconnect: true,
         // refetchInterval: 5000,
+
+        // -- cache & garbage collection --
+        // gcTime: 1000 * 60 * 5
     });
 }

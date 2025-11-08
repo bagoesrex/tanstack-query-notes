@@ -15,6 +15,9 @@ export const queryClient = new QueryClient({
             //     // fallback: use new data
             //     return newData;
             // },
+
+            // -- network mode --
+            // networkMode: "online" // default
         }
     }
 });

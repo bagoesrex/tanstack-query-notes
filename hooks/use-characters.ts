@@ -29,5 +29,8 @@ export function useCharacters() {
         // -- error & retry --
         // retry: 3, // retry failed requests up to 3 times before showing an error
         // retryDelay: 1000 * 60 * 2, // wait 2 minutes before the next retry attempt
+
+        // -- window focus refetching --
+        // refetchOnWindowFocus: true //default
     });
 }

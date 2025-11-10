@@ -1,0 +1,68 @@
+# Window Focus Refetching
+
+TanStack Query automatically refetches **stale data** when the user returns to the app window.
+
+## Disabling Globally
+
+```tsx
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: { refetchOnWindowFocus: false },
+  },
+});
+```
+
+## Disabling Per Query
+
+```tsx
+useQuery({
+  queryKey: ["todos"],
+  queryFn: fetchTodos,
+  refetchOnWindowFocus: false,
+});
+```
+
+## Custom Focus Handling
+
+You can override focus behavior using:
+
+```tsx
+focusManager.setEventListener((handleFocus) => {
+  window.addEventListener("visibilitychange", () => {
+    handleFocus(document.visibilityState === "visible");
+  });
+});
+```
+
+## React Native
+
+Use `AppState` to detect when the app becomes active:
+
+```tsx
+import { AppState } from "react-native";
+import { focusManager } from "@tanstack/react-query";
+
+function onAppStateChange(status: AppStateStatus) {
+  if (Platform.OS !== "web") {
+    focusManager.setFocused(status === "active");
+  }
+}
+
+useEffect(() => {
+  const subscription = AppState.addEventListener("change", onAppStateChange);
+
+  return () => subscription.remove();
+}, []);
+```
+
+## Managing Focus State
+
+```tsx
+import { focusManager } from "@tanstack/react-query";
+
+// Override the default focus state
+focusManager.setFocused(true);
+
+// Fallback to the default focus check
+focusManager.setFocused(undefined);
+```

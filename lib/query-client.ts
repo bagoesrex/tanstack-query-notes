@@ -18,6 +18,9 @@ export const queryClient = new QueryClient({
 
             // -- network mode --
             // networkMode: "online" // default
+
+            // -- window focus refetching --
+            // refetchOnWindowFocus: true //default
         }
     }
 });

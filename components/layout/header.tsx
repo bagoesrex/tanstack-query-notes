@@ -12,7 +12,7 @@ export default function Header() {
     ];
 
     return (
-        <header className="max-w-xl w-full mx-auto px-3">
+        <header className="max-w-xl w-full mx-auto">
             <nav className="flex gap-5 pt-12">
                 {links.map(({ href, label }) => (
                     <Link

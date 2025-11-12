@@ -30,8 +30,8 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased tracking-tight`}
       >
         <QueryProvider>
-          <Header />
-          <div className="min-h-screen flex flex-col justify-between">
+          <div className="min-h-screen flex flex-col justify-between px-3 pb-3">
+            <Header />
             {children}
           </div>
         </QueryProvider>

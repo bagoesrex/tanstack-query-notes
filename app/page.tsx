@@ -1,4 +1,4 @@
-import HomeMdx from '@/content/home.mdx'
+import HomeMdx from '@/content/queries.mdx'
 
 export default function Home() {
     return (

@@ -1,3 +1,4 @@
+import NoteCard from "@/components/notes/note-card"
 import { getAllMdxMetadata } from "@/lib/mdx-utils"
 
 export default function NotesPage() {
@@ -5,16 +6,14 @@ export default function NotesPage() {
 
     return (
         <>
-            <h1 className="font-semibold text-xl tracking-tighter">Notes</h1>
-            {
-                notes.map((note) => (
-                    <div key={note.slug}>
-                        <p>{note.title}</p>
-                        <p>{note.slug}</p>
-                        <p>{note.createdAt}</p>
-                    </div>
-                ))
-            }
+            <h1 className="font-semibold text-xl tracking-tighter mb-5">Notes</h1>
+            <div className="flex flex-col gap-1.5">
+                {notes
+                    .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
+                    .map((note) => (
+                        <NoteCard key={note.slug} note={note} />
+                    ))}
+            </div>
         </>
     )
 }

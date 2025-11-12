@@ -1,0 +1,47 @@
+# Network Mode
+
+TanStack Query supports 3 **network modes** that define how Queries and Mutations behave when offline.
+You can set this **per query/mutation** or **globally** via defaults.
+Default: `online`
+
+## `online` (default)
+
+- Queries **don’t run** without network.
+- If offline:
+  - The query remains in its current state (`pending`, `error`, `success`).
+  - `fetchStatus` becomes:
+    - `fetching` → request in progress
+    - `paused` → waiting for connection
+    - `idle` → not fetching
+  - Retries are paused until connection returns.
+  - `refetchOnReconnect` defaults to `true`.
+
+Use `isPaused` and `isFetching` instead of just checking for pending.
+
+## `always`
+
+- Ignores network state, always runs the query.
+- Suitable for:
+  - Local data (e.g. `AsyncStorage`)
+  - Static promises (`Promise.resolve(5)`)
+- Retries **don’t pause**, `refetchOnReconnect` defaults to `false`.
+
+## `offlineFirst`
+
+- Runs the query once, **pauses retries** if offline.
+- Ideal for **PWAs or caching systems** (e.g. Service Worker or HTTP cache).
+- Acts like `online` mode if a cache miss occurs.
+
+## DevTools
+
+- Show queries as `paused` when offline.
+- FIncludes a “Mock offline behavior” toggle (doesn’t change real network state).
+
+## Signature
+
+```ts
+networkMode?: 'online' | 'always' | 'offlineFirst'
+```
+
+_optional_
+Default: `'online'`

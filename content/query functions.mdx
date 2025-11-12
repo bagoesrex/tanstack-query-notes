@@ -1,0 +1,96 @@
+# Query Functions
+
+A **query function** is any function that **returns a promise**.
+The promise should either **resolve the data or throw an error**.
+
+```tsx
+// Basic examples
+useQuery({ queryKey: ["todos"], queryFn: fetchAllTodos });
+useQuery({ queryKey: ["todos", todoId], queryFn: () => fetchTodoById(todoId) });
+
+// Using async function
+useQuery({
+  queryKey: ["todos", todoId],
+  queryFn: async () => {
+    const data = await fetchTodoById(todoId);
+    return data;
+  },
+});
+
+// Using queryKey inside queryFn
+useQuery({
+  queryKey: ["todos", todoId],
+  queryFn: ({ queryKey }) => fetchTodoById(queryKey[1]),
+});
+```
+
+## Handling Errors
+
+TanStack Query detects errors only when the query function **throws** or returns a **rejected Promise**.
+Thrown errors are stored in the query’s `error` state.
+
+```tsx
+const { error } = useQuery({
+  queryKey: ["todos", todoId],
+  queryFn: async () => {
+    if (somethingGoesWrong) throw new Error("Oh no!");
+    if (somethingElseGoesWrong) return Promise.reject(new Error("Oh no!"));
+    return data;
+  },
+});
+```
+
+## Using `fetch` (which doesn’t throw by default)
+
+Since `fetch` doesn’t throw on HTTP errors, you must handle them manually:
+
+```tsx
+useQuery({
+  queryKey: ["todos", todoId],
+  queryFn: async () => {
+    const res = await fetch("/todos/" + todoId);
+    if (!res.ok) throw new Error("Network response was not ok");
+    return res.json();
+  },
+});
+```
+
+## Using Query Variables
+
+Query keys can pass variables (e.g., filters or pagination) into your query function via the **QueryFunctionContext**.
+
+```tsx
+function Todos({ status, page }) {
+  return useQuery({
+    queryKey: ["todos", { status, page }],
+    queryFn: fetchTodoList,
+  });
+}
+
+function fetchTodoList({ queryKey }) {
+  const [_key, { status, page }] = queryKey;
+  return fetch(`/api/todos?status=${status}&page=${page}`).then((res) =>
+    res.json()
+  );
+}
+```
+
+## QueryFunctionContext
+
+Each query function receives a context object:
+
+| Property    | Description                                       |
+| ----------- | ------------------------------------------------- |
+| `queryKey`  | The key identifying the query                     |
+| `client`    | The current `QueryClient` instance                |
+| `signal`    | An `AbortSignal` for cancellation support         |
+| `meta`      | Optional metadata about the query                 |
+| `pageParam` | (Infinite Queries) the current page parameter     |
+| `direction` | (Deprecated) fetch direction for infinite queries |
+
+## Summary
+
+- The query function must **return a promise**.
+- Always **throw errors** to trigger React Query’s error handling.
+- `fetch` must be manually checked for `.ok`.
+- Use `queryKey` to pass and extract variables cleanly.

@@ -12,8 +12,15 @@ export function getAllMdxMetadata() {
             const filePath = path.join(contentDir, file);
             const stats = fs.statSync(filePath);
 
+            const name = path.parse(file).name;
+            const slug = name
+            .trim()
+            .toLowerCase()
+            .replace(/\s+/g, "-");
+            
             return {
-                slug: path.parse(file).name,
+                title: name,
+                slug: slug,
                 createdAt: stats.birthtime.toISOString(),
             }
         })

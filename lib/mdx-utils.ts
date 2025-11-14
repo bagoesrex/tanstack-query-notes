@@ -3,27 +3,33 @@ import path from "node:path";
 
 const contentDir = path.join(process.cwd(), "content");
 
-export function getAllMdxMetadata() {
+export async function getAllMdxMetadata() {
     const files = fs.readdirSync(contentDir);
 
-    return files
-        .filter((file) => file.endsWith(".mdx"))
-        .map((file) => {
-            const filePath = path.join(contentDir, file);
-            const stats = fs.statSync(filePath);
+    const results = await Promise.all(
+        files
+            .filter((file) => file.endsWith(".mdx"))
+            .map(async (file) => {
+                const filePath = path.join(contentDir, file);
+                const stats = fs.statSync(filePath);
 
-            const name = path.parse(file).name;
-            const slug = name
-                .trim()
-                .toLowerCase()
-                .replace(/\s+/g, "-");
+                const name = path.parse(file).name;
+                const slug = name.trim().toLowerCase().replace(/\s+/g, "-");
 
-            return {
-                title: name,
-                slug: slug,
-                createdAt: stats.birthtime.toISOString(),
-            }
-        })
+                const module = await import(`@/content/${file}`);
+                const mdxMeta = module.metadata ?? {};
+
+                return {
+                    title: mdxMeta.title ?? name,
+                    slug: slug,
+                    createdAt:
+                        mdxMeta.createdAt ??
+                        stats.birthtime.toISOString(),
+                };
+            })
+    );
+
+    return results;
 }
 
 export function getAllMdxSlugs() {

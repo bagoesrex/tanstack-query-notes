@@ -4,8 +4,8 @@ import NoteCard from "@/components/notes/note-card"
 import { getAllMdxMetadata } from "@/lib/mdx-utils"
 import Link from "next/link"
 
-export default function Home() {
-    const notes = getAllMdxMetadata()
+export default async function Home() {
+    const notes = await getAllMdxMetadata()
 
     return (
         <main className="min-h-screen max-w-xl w-full mx-auto mt-12">

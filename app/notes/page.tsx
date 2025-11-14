@@ -3,8 +3,8 @@ export const dynamic = "force-static";
 import NoteCard from "@/components/notes/note-card"
 import { getAllMdxMetadata } from "@/lib/mdx-utils"
 
-export default function NotesPage() {
-    const notes = getAllMdxMetadata()
+export default async function NotesPage() {
+    const notes = await getAllMdxMetadata()
 
     return (
         <>

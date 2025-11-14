@@ -57,12 +57,28 @@ code {
     background-color: var(--color-gray-100);
 }
 
+pre code:has(> span) {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
 pre code {
     background-color: transparent;
     padding: 0;
     border: none;
-    font-size: 15px;
-    line-height: 0.5rem;
+    font-size: 10px;
+    line-height: normal;
+}
+
+@media (min-width: 768px) {
+    pre code {
+        background-color: transparent;
+        padding: 0;
+        border: none;
+        font-size: 15px;
+        line-height: normal;
+    }
 }
 
 pre code>span .sh__token--identifier {

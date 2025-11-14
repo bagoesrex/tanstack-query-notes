@@ -1,7 +1,6 @@
 import { ComponentPropsWithoutRef } from 'react';
 import Link from 'next/link';
 import { highlight } from 'sugar-high';
-import remarkGfm from "remark-gfm";
 
 type HeadingProps = ComponentPropsWithoutRef<'h1'>;
 type ParagraphProps = ComponentPropsWithoutRef<'p'>;
@@ -113,6 +112,3 @@ declare global {
 export function useMDXComponents(): MDXProvidedComponents {
     return components;
 }
-export const mdxOptions = {
-    remarkPlugins: [remarkGfm],
-};

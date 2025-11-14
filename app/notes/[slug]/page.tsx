@@ -24,11 +24,8 @@ export default async function NotesDetailPage({
     }
 
     return (
-        <>
-            <h1 className="font-semibold text-xl tracking-tighter capitalize">
-                {slug}
-            </h1>
+        <div className="flex flex-col space-y-2">
             <MdxComponent />
-        </>
+        </div>
     );
 }

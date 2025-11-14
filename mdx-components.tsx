@@ -1,6 +1,7 @@
 import { ComponentPropsWithoutRef } from 'react';
 import Link from 'next/link';
 import { highlight } from 'sugar-high';
+import remarkGfm from "remark-gfm";
 
 type HeadingProps = ComponentPropsWithoutRef<'h1'>;
 type ParagraphProps = ComponentPropsWithoutRef<'p'>;
@@ -8,36 +9,41 @@ type ListProps = ComponentPropsWithoutRef<'ul'>;
 type ListItemProps = ComponentPropsWithoutRef<'li'>;
 type AnchorProps = ComponentPropsWithoutRef<'a'>;
 type BlockquoteProps = ComponentPropsWithoutRef<'blockquote'>;
+type TableProps = ComponentPropsWithoutRef<'table'>;
 
 const components = {
     h1: (props: HeadingProps) => (
-        <h1 className="font-medium mb-0" {...props} />
+        <h1 className="font-bold text-xl tracking-tighter capitalize mb-5" {...props} >
+            - {props.children} -
+        </h1 >
     ),
     h2: (props: HeadingProps) => (
         <h2
-            className="text-gray-800 dark:text-zinc-200 font-medium mt-8 mb-3"
+            className="font-semibold text-xl tracking-tighter capitalize mt-4 mb-2"
             {...props}
-        />
+        >
+            -- {props.children} --
+        </h2>
     ),
     h3: (props: HeadingProps) => (
         <h3
-            className="text-gray-800 dark:text-zinc-200 font-medium mt-8 mb-3"
+            className="font-medium mt-8 mb-3"
             {...props}
         />
     ),
     h4: (props: HeadingProps) => <h4 className="font-medium" {...props} />,
     p: (props: ParagraphProps) => (
-        <p className="text-gray-800 dark:text-zinc-300 leading-snug" {...props} />
+        <p className="" {...props} />
     ),
     ol: (props: ListProps) => (
         <ol
-            className="text-gray-800 dark:text-zinc-300 list-decimal pl-5 space-y-2"
+            className="list-decimal pl-5 space-y-2"
             {...props}
         />
     ),
     ul: (props: ListProps) => (
         <ul
-            className="text-gray-800 dark:text-zinc-300 list-disc pl-5 space-y-1"
+            className="list-disc pl-5 space-y-1"
             {...props}
         />
     ),
@@ -81,26 +87,17 @@ const components = {
         const codeHTML = highlight(children as string);
         return <code dangerouslySetInnerHTML={{ __html: codeHTML }} {...props} />;
     },
-    Table: ({ data }: { data: { headers: string[]; rows: string[][] } }) => (
-        <table>
-            <thead>
-                <tr>
-                    {data.headers.map((header, index) => (
-                        <th key={index}>{header}</th>
-                    ))}
-                </tr>
-            </thead>
-            <tbody>
-                {data.rows.map((row, index) => (
-                    <tr key={index}>
-                        {row.map((cell, cellIndex) => (
-                            <td key={cellIndex}>{cell}</td>
-                        ))}
-                    </tr>
-                ))}
-            </tbody>
-        </table>
+    table: (props: TableProps) => (
+        <div className="overflow-x-auto w-full mt-2 mb-3">
+            <table
+                className="
+                    w-full border-collapse rounded-xl overflow-hidden text-sm
+                "
+                {...props}
+            />
+        </div>
     ),
+
     blockquote: (props: BlockquoteProps) => (
         <blockquote
             className="ml-[0.075em] border-l-3 border-gray-300 pl-4 text-gray-700 dark:border-zinc-600 dark:text-zinc-300"
@@ -116,3 +113,6 @@ declare global {
 export function useMDXComponents(): MDXProvidedComponents {
     return components;
 }
+export const mdxOptions = {
+    remarkPlugins: [remarkGfm],
+};

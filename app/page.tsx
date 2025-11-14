@@ -19,7 +19,7 @@ export default async function Home() {
                 </Link>
                 <div className="flex flex-col gap-1.5">
                     {notes
-                        .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
+                        .sort((a, b) => a.order - b.order)
                         .slice(0, 3)
                         .map((note) => (
                             <NoteCard key={note.slug} note={note} />

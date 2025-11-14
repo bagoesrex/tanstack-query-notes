@@ -6,12 +6,14 @@ import { getAllMdxMetadata } from "@/lib/mdx-utils"
 export default async function NotesPage() {
     const notes = await getAllMdxMetadata()
 
+    console.log(notes)
+
     return (
         <>
             <h1 className="font-semibold text-xl tracking-tighter mb-5">Notes</h1>
             <div className="flex flex-col gap-1.5">
                 {notes
-                    .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
+                    .sort((a, b) => a.order - b.order)
                     .map((note) => (
                         <NoteCard key={note.slug} note={note} />
                     ))}

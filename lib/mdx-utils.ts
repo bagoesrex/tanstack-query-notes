@@ -25,6 +25,7 @@ export async function getAllMdxMetadata() {
                     createdAt:
                         mdxMeta.createdAt ??
                         stats.birthtime.toISOString(),
+                    order: mdxMeta.order ?? 0
                 };
             })
     );

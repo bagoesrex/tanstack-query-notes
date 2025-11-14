@@ -1,3 +1,5 @@
+export const dynamic = "force-static";
+
 import NoteCard from "@/components/notes/note-card"
 import { getAllMdxMetadata } from "@/lib/mdx-utils"
 import Link from "next/link"

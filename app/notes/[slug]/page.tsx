@@ -1,3 +1,5 @@
+export const dynamic = "force-static";
+
 import { getAllMdxSlugs, getMdxComponent } from "@/lib/mdx-utils";
 
 export async function generateStaticParams() {

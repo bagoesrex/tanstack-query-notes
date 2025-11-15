@@ -6,8 +6,6 @@ import { getAllMdxMetadata } from "@/lib/mdx-utils"
 export default async function NotesPage() {
     const notes = await getAllMdxMetadata()
 
-    console.log(notes)
-
     return (
         <>
             <h1 className="font-semibold text-xl tracking-tighter mb-5">Notes</h1>

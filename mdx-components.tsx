@@ -86,17 +86,16 @@ const components = {
         const codeHTML = highlight(children as string);
         return <code dangerouslySetInnerHTML={{ __html: codeHTML }} {...props} />;
     },
-    table: (props: TableProps) => (
+    table: ({ children, ...props }: TableProps) => (
         <div className="overflow-x-auto w-full mt-2 mb-3">
             <table
-                className="
-                    w-full border-collapse rounded-xl overflow-hidden text-sm
-                "
+                className="w-full border-collapse rounded-xl overflow-hidden text-sm"
                 {...props}
-            />
+            >
+                {children}
+            </table>
         </div>
     ),
-
     blockquote: (props: BlockquoteProps) => (
         <blockquote
             className="ml-[0.075em] border-l-3 border-gray-300 pl-4 text-gray-700 dark:border-zinc-600 dark:text-zinc-300"

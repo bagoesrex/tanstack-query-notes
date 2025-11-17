@@ -1,74 +1,96 @@
 export const metadata = {
-  title: "Window Focus Refetching",
-  createdAt: "2025-11-10",
-  order: 9,
+  title: "Disabling or Pausing Queries",
+  createdAt: "2025-11-17",
+  order: 10,
 };
 
-# Window Focus Refetching
+# Disabling or Pausing Queries
 
-TanStack Query automatically refetches **stale data** when the user returns to the app window.
+If you ever want to disable a query from automatically running, you can use the `enabled = false` option. The enabled option also accepts a callback that returns a boolean.
 
-## Disabling Globally
+When you set `enabled: false`:
+
+- The query **does NOT auto-fetch** on mount.
+- It does **not** refetch in the background.
+- It does **not** respond to `invalidateQueries` or `refetchQueries`.
+- If cached data exists → **status: success**.
+- If no cached data → **status: pending, fetchStatus: idle**.
+- You can still **manually run** `refetch()` (except when using `skipToken`).
 
 ```tsx
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: { refetchOnWindowFocus: false },
-  },
-});
+function Todos() {
+  const { isLoading, isError, data, error, refetch, isFetching } = useQuery({
+    queryKey: ["todos"],
+    queryFn: fetchTodoList,
+    enabled: false,
+  });
+
+  return (
+    <div>
+      <button onClick={() => refetch()}>Fetch Todos</button>
+
+      {data ? (
+        <ul>
+          {data.map((todo) => (
+            <li key={todo.id}>{todo.title}</li>
+          ))}
+        </ul>
+      ) : isError ? (
+        <span>Error: {error.message}</span>
+      ) : isLoading ? (
+        <span>Loading...</span>
+      ) : (
+        <span>Not ready ...</span>
+      )}
+
+      <div>{isFetching ? "Fetching..." : null}</div>
+    </div>
+  );
+}
 ```
 
-## Disabling Per Query
+## Lazy Query
+
+Use `enabled` to run a query only when certain conditions are met.
 
 ```tsx
 useQuery({
-  queryKey: ["todos"],
-  queryFn: fetchTodos,
-  refetchOnWindowFocus: false,
+  queryKey: ["todos", filter],
+  queryFn: () => fetchTodos(filter),
+  enabled: !!filter,
 });
 ```
 
-## Custom Focus Handling
+Perfect for:
 
-You can override focus behavior using:
+- Fetching after the user selects a filter
+- Fetching after entering a contact ID
+- Search input queries
 
-```tsx
-focusManager.setEventListener((handleFocus) => {
-  window.addEventListener("visibilitychange", () => {
-    handleFocus(document.visibilityState === "visible");
-  });
-});
-```
+## `isLoading`
 
-## React Native
+For lazy queries, prefer `isLoading` instead of `pending`:
 
-Use `AppState` to detect when the app becomes active:
+- `isLoading` = **first-time fetching**
+- Prevents showing a loading spinner before the query actually starts.
 
-```tsx
-import { AppState } from "react-native";
-import { focusManager } from "@tanstack/react-query";
+## `skipToken` **(TypeScript-only)**
 
-function onAppStateChange(status: AppStateStatus) {
-  if (Platform.OS !== "web") {
-    focusManager.setFocused(status === "active");
-  }
-}
-
-useEffect(() => {
-  const subscription = AppState.addEventListener("change", onAppStateChange);
-
-  return () => subscription.remove();
-}, []);
-```
-
-## Managing Focus State
+A type-safe way to disable a query:
 
 ```tsx
-import { focusManager } from "@tanstack/react-query";
-
-// Override the default focus state
-focusManager.setFocused(true);
-
-// Fallback to the default focus check
-focusManager.setFocused(undefined);
+queryFn: filter ? () => fetchTodos(filter) : skipToken;
 ```
+
+> With `skipToken`, `refetch()` **will not work**.
+
+## Summary
+
+- `enabled: false` → fully paused query, can manually refetch.
+- **Lazy query** → run only when needed (best practice for dependent-data).
+- `skipToken` → safest disable method in TypeScript; no manual refetch.
+
+**best practice pattern** for fetching:
+
+- contacts → then addresses.
+- parent → child data dependencies.

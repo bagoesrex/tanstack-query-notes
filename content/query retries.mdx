@@ -1,0 +1,80 @@
+export const metadata = {
+  title: "Query Retries",
+  createdAt: "2025-11-17",
+  order: 11,
+};
+
+# Query Retries
+
+When a query fails, TanStack Query will retry it automatically up to the default **3 times**, unless you configure it differently.
+
+## Retry Options
+
+- `retry: false` → disable retries
+- `retry: 6` → retry up to 6 times
+- `retry: true` → retry forever
+- `retry: (failureCount, error) => boolean` → custom retry logic
+
+> Note: On the server, default retries = **0** for faster rendering.
+
+> ⚠️ Error Handling
+> During retries, the error is stored in `failureReason`
+> After final retry, the error moves to `error`
+
+## Retry Delay
+
+Retries use exponential backoff by default:
+
+- Starts at **1000ms**
+- Doubles each attempt
+- Maxes at **30s**
+
+You can override it globally or per query:
+
+```tsx
+import {
+  QueryCache,
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query'
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
+    },
+  },
+})
+
+function App() {
+  return <QueryClientProvider client={queryClient}>...</QueryClientProvider>
+```
+
+Or use a fixed delay:
+
+```tsx
+const result = useQuery({
+  queryKey: ["todos"],
+  queryFn: fetchTodoList,
+  retryDelay: 1000, // Will always wait 1000ms to retry, regardless of how many retries
+});
+```
+
+## Background Retry Behavior
+
+Retries pause when the tab is inactive (same as refetch behavior).
+
+If you need **continuous retries in the background**, disable retries and manually control timing using `refetchInterval`:
+
+```tsx
+const result = useQuery({
+  queryKey: ["todos"],
+  queryFn: fetchTodos,
+  refetchInterval: (query) => {
+    // Refetch more frequently when in error state
+    return query.state.status === "error" ? 5000 : 30000;
+  },
+  refetchIntervalInBackground: true,
+  retry: false, // Disable built-in retries
+});
+```

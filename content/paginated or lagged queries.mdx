@@ -1,0 +1,101 @@
+export const metadata = {
+  title: "Paginated or Lagged Queries",
+  createdAt: "2025-11-17",
+  order: 12,
+};
+
+# Paginated or Lagged Queries
+
+When you create paginated queries by adding the page number to the query key:
+
+```ts
+const result = useQuery({
+  queryKey: ["projects", page],
+  queryFn: () => fetchProjects(page),
+});
+```
+
+But this causes a problem: `UI Flicker`
+
+Every time the page changes, TanStack Query treats it as a new query, so the UI switches between:
+
+- `success` → `pending` → `success`
+  This creates a flicker while loading each page.
+
+## Better Pagination with `placeholderData`
+
+Use `placeholderData: keepPreviousData` to keep old data visible while fetching new pages.
+
+This gives:
+
+- **Previous page data stays visible** while the new page loads.
+- **Smooth swap** when the new data arrives.
+- Access to `isPlaceholderData` to know if you're showing old cached data.
+
+Example:
+
+```tsx
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import React from "react";
+
+function Todos() {
+  const [page, setPage] = React.useState(0);
+
+  const fetchProjects = (page = 0) =>
+    fetch("/api/projects?page=" + page).then((res) => res.json());
+
+  const { isPending, isError, error, data, isFetching, isPlaceholderData } =
+    useQuery({
+      queryKey: ["projects", page],
+      queryFn: () => fetchProjects(page),
+      placeholderData: keepPreviousData,
+    });
+
+  return (
+    <div>
+      {isPending ? (
+        <div>Loading...</div>
+      ) : isError ? (
+        <div>Error: {error.message}</div>
+      ) : (
+        <div>
+          {data.projects.map((project) => (
+            <p key={project.id}>{project.name}</p>
+          ))}
+        </div>
+      )}
+      <span>Current Page: {page + 1}</span>
+      <button
+        onClick={() => setPage((old) => Math.max(old - 1, 0))}
+        disabled={page === 0}
+      >
+        Previous Page
+      </button>
+      <button
+        onClick={() => {
+          if (!isPlaceholderData && data.hasMore) {
+            setPage((old) => old + 1);
+          }
+        }}
+        // Disable the Next Page button until we know a next page is available
+        disabled={isPlaceholderData || !data?.hasMore}
+      >
+        Next Page
+      </button>
+      {isFetching ? <span> Loading...</span> : null}
+    </div>
+  );
+}
+```
+
+This prevents UI flicker and makes pagination smooth.
+
+UX Benefits:
+
+- No blank loading states between pages
+- Page navigation feels instant
+- You can disable the "Next" button until real data loads using `isPlaceholderData`
+
+## Works with `useInfiniteQuery` Too
+
+`placeholderData` also works with infinite queries, letting you keep previous results visible when the internal query key changes.

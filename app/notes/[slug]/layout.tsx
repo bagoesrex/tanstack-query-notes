@@ -11,7 +11,7 @@ export default function NotesDetailLayout({
             <div className="sticky top-0 z-50 flex justify-end p-2">
                 <Link
                     href="/notes"
-                    className="flex flex-row items-center gap-2 px-2 py-0.5 text-md rounded border border-dashed hover:border-solid bg-white"
+                    className="flex flex-row items-center gap-2 px-2 py-0.5 text-md rounded border border-dashed hover:border-solid bg-white dark:bg-black"
                 >
                     <ArrowLeft size={17} />
                     Back to notes

@@ -1,0 +1,131 @@
+export const metadata = {
+  title: "Infinite Queries",
+  createdAt: "2025-11-19",
+  order: 13,
+};
+
+# Infinite Queries
+
+**Infinite queries** are used for “Load More” lists or infinite scrolling. They extend useQuery with special features for fetching pages incrementally.
+
+## Key Differences from `useQuery`
+
+`useInfiniteQuery` provides:
+
+- `data.pages` – array of all fetched pages
+- `data.pageParams` – page parameters used for each page
+- `fetchNextPage()` – load the next page
+- `fetchPreviousPage()` – load the previous page (optional)
+- `initialPageParam` – required, starting page/cursor
+- `getNextPageParam()` – define how to find the cursor/param for the next page
+- `getPreviousPageParam()` – define how to fetch the previous page
+- `hasNextPage` / `hasPreviousPage` – booleans
+- `isFetchingNextPage` / `isFetchingPreviousPage` – loading indicators
+
+> `initialData` and `placeholderData` must follow the infinite-query structure (`pages`, `pageParams`).
+
+## Basic Example (Load More)
+
+```tsx
+useInfiniteQuery({
+  queryKey: ['projects'],
+  queryFn: fetchProjects,
+  initialPageParam: 0,
+  getNextPageParam: (lastPage) => lastPage.nextCursor,
+})
+```
+
+Then call:
+
+```tsx
+fetchNextPage()
+```
+
+And read from:
+
+```tsx
+data.pages
+```
+
+## One Fetch at a Time
+
+Infinite queries only allow **one active fetch**.
+Calling `fetchNextPage` while already fetching can cause overwrite issues.
+
+Recommended:
+
+```tsx
+if (hasNextPage && !isFetching) fetchNextPage()
+```
+
+To allow parallel fetching:
+
+```tsx
+fetchNextPage({ cancelRefetch: false })
+```
+
+## Refetching Behavior
+
+When the query becomes stale, all pages are **refetched sequentially** from the first page.
+If the cache is cleared, pagination resets.
+
+## Bi-Directional Pagination
+
+Load both directions using:
+
+```tsx
+getPreviousPageParam
+fetchPreviousPage
+```
+
+## Reverse Page Order
+
+use `select`:
+
+```tsx
+select: (data) => ({
+  pages: [...data.pages].reverse(),
+  pageParams: [...data.pageParams].reverse(),
+})
+```
+
+## Manually Editing Infinite Query Data
+
+Remove first page:
+
+```tsx
+setQueryData(['projects'], data => ({
+  pages: data.pages.slice(1),
+  pageParams: data.pageParams.slice(1),
+}))
+```
+
+Remove item from a page:
+
+```tsx
+pages.map(page => page.filter(v => v.id !== updatedId))
+```
+
+Keep only first page:
+
+```tsx
+pages: data.pages.slice(0, 1)
+```
+
+## Limiting Number of Stored Pages
+
+Use `maxPages` to reduce memory/refetch cost:
+
+```tsx
+useInfiniteQuery({
+  maxPages: 3,
+})
+```
+
+## No Cursor in API?
+
+Use `pageParam` as a cursor:
+
+```tsx
+getNextPageParam: (_, __, lastPageParam) => lastPageParam + 1
+```

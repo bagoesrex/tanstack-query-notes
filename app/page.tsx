@@ -8,7 +8,7 @@ export default async function Home() {
     const notes = await getAllMdxMetadata()
 
     return (
-        <main className="min-h-screen max-w-xl w-full mx-auto mt-12">
+        <main className="min-h-screen max-w-xl w-full mx-auto mt-25 px-3">
             <section id="hero">
                 <h1 className="font-semibold text-xl tracking-tighter mb-5">My TanStack Query Journey | Bagoes Rex</h1>
                 <p className="mb-5">These are my personal notes from exploring TanStack Query. Hopefully, they’ll help others who are on the same learning journey.</p>

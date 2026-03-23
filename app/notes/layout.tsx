@@ -6,7 +6,7 @@ export default function NotesLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <section className="min-h-screen max-w-xl w-full mx-auto mt-12">
+        <section className="min-h-screen max-w-xl w-full mx-auto mt-20 px-3">
             {children}
         </section>
     )

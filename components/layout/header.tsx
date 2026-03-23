@@ -1,31 +1,19 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { Notebook } from "lucide-react";
 
 export default function Header() {
-    const pathname = usePathname();
-
-    const links = [
-        { href: "/", label: "home" },
-        { href: "/notes", label: "notes" },
-    ];
-
     return (
-        <header className="max-w-xl w-full mx-auto">
-            <nav className="flex gap-5 pt-12">
-                {links.map(({ href, label }) => (
-                    <Link
-                        key={href}
-                        href={href}
-                        className={`border-b-2 border-dotted hover:border-solid
-                            ${pathname === href ? `border-solid` : `border-dotted`}
-                            `}
-                    >
-                        {label}
-                    </Link>
-                ))}
-            </nav>
+        <header className="fixed w-full border-b border-gray-500/50 bg-white/80 px-0 backdrop-blur-lg">
+            <div className="mx-auto flex w-full max-w-3xl items-center justify-between rounded-xs px-4 py-2.75">
+                <div className="flex gap-2 items-center">
+                    <div className="bg-amber-400 size-fit p-1.5 rounded-md text-white">
+                        <Notebook className="size-4" />
+                    </div>
+                    <span>Tanstack Query</span>
+                </div>
+                <span className="text-sm text-gray-600">10 notes</span>
+            </div>
         </header>
     );
 }

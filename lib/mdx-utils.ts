@@ -33,6 +33,11 @@ export async function getAllMdxMetadata() {
     return results;
 }
 
+export function getTotalNotes() {
+    const files = fs.readdirSync(contentDir);
+    return files.filter((file) => file.endsWith(".mdx")).length;
+}
+
 export function getAllMdxSlugs() {
     const files = fs.readdirSync(contentDir);
 

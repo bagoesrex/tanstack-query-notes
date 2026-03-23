@@ -1,8 +1,9 @@
-"use client";
-
+import { getTotalNotes } from "@/lib/mdx-utils";
 import { Notebook } from "lucide-react";
 
 export default function Header() {
+    const totalNotes = getTotalNotes()
+
     return (
         <header className="fixed w-full border-b border-gray-500/50 bg-white/80 px-0 backdrop-blur-lg">
             <div className="mx-auto flex w-full max-w-xl items-center justify-between rounded-xs px-4 py-2.75">
@@ -12,7 +13,10 @@ export default function Header() {
                     </div>
                     <span className="font-bold">Tanstack Query</span>
                 </div>
-                <span className="text-sm text-gray-600">10 notes</span>
+                <div className="flex text-gray-600 gap-1 items-center">
+                    <span className="text-xs">{totalNotes}</span>
+                    <span className="text-xs">catatan</span>
+                </div>
             </div>
         </header>
     );

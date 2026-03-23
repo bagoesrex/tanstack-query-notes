@@ -1,18 +1,14 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import QueryProvider from "@/providers/query-provider";
 import Header from "@/components/layout/header";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const plusJakartaSans = Plus_Jakarta_Sans({
+  variable: "--font-plus-jakarta-sans",
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+  weight: ["400", "600"]
+})
 
 export const metadata: Metadata = {
   title: "My TanStack Query Journey | Bagoes Rex",
@@ -27,10 +23,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased tracking-tight`}
+        className={`${plusJakartaSans.variable} antialiased tracking-tight`}
       >
         <QueryProvider>
-          <div className="min-h-screen flex flex-col justify-between pb-3">
+          <div className="min-h-screen flex flex-col justify-between pb-3 font-jakarta">
             <Header />
             {children}
           </div>

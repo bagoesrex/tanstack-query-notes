@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import QueryProvider from "@/providers/query-provider";
 import Header from "@/components/layout/header";
 
-const plusJakartaSans = Plus_Jakarta_Sans({
-  variable: "--font-plus-jakarta-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"]
 })
@@ -23,10 +23,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${plusJakartaSans.variable} antialiased tracking-tight`}
+        className={`${inter.variable} antialiased tracking-tight`}
       >
         <QueryProvider>
-          <div className="min-h-screen flex flex-col justify-between pb-3 font-jakarta">
+          <div className="min-h-screen flex flex-col justify-between pb-3 font-inter">
             <Header />
             {children}
           </div>

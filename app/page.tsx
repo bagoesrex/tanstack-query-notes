@@ -8,7 +8,7 @@ export default async function Home() {
     const notes = await getAllMdxMetadata()
 
     return (
-        <main className="min-h-screen bg-gray-100/80">
+        <main className="min-h-screen">
             <MaxWidthWrapper className="space-y-7 pt-25 pb-10">
                 <div className="space-y-2">
                     <h1 className="text-2xl font-bold">Notes</h1>

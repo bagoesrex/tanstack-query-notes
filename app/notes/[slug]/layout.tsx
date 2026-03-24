@@ -7,7 +7,7 @@ export default function NotesDetailLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <div className="relative">
+        <div className="relative font-inter">
             <div className="sticky top-0 z-50 flex justify-end p-2">
                 <Link
                     href="/"

@@ -1,9 +1,5 @@
 @import 'tailwindcss';
 
-@theme {
-    --font-family-sans: 'Inter', sans-serif;
-}
-
 :root {
     --sh-class: #7aa2f7;
     --sh-sign: #89ddff;
@@ -13,6 +9,11 @@
     --sh-jsxliterals: #7aa2f7;
     --sh-property: #73daca;
     --sh-entity: #e0af68;
+}
+
+p {
+    line-height: 27px;
+    font-size: 15px;
 }
 
 html {
@@ -51,10 +52,10 @@ pre {
 
 code {
     font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
-    font-size: 14px;
+    font-size: 12px;
     padding: 0.2em 0.4em;
     border-radius: 0.3em;
-    background-color: var(--color-gray-100);
+    background-color: var(--color-gray-200);
 }
 
 pre code:has(> span) {
@@ -76,7 +77,7 @@ pre code {
         background-color: transparent;
         padding: 0;
         border: none;
-        font-size: 15px;
+        font-size: 13px;
         line-height: normal;
     }
 }
@@ -121,11 +122,11 @@ input[type='email'] {
 }
 
 table thead th {
-    @apply bg-gray-100 font-semibold px-4 py-2 border-b border-gray-200;
+    @apply bg-gray-200 font-semibold px-4 py-2 border-b border-black;
 }
 
 table tbody td {
-    @apply px-4 py-2 border-b border-gray-200;
+    @apply px-4 py-2 border-b bg-white border-gray-200;
 }
 
 table tbody tr:nth-child(even) {

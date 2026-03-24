@@ -26,7 +26,7 @@ export default function RootLayout({
         className={`${inter.variable} antialiased tracking-tight`}
       >
         <QueryProvider>
-          <div className="min-h-screen flex flex-col justify-between pb-3 font-inter">
+          <div className="min-h-screen flex flex-col justify-between font-inter">
             <Header />
             {children}
           </div>

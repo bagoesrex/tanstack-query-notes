@@ -5,7 +5,7 @@ export default function Header() {
     const totalNotes = getTotalNotes()
 
     return (
-        <header className="fixed w-full border-b border-gray-500/50 bg-white/80 px-0 backdrop-blur-lg">
+        <header className="fixed w-full z-50 border-b border-gray-500/50 bg-white/80 px-0 backdrop-blur-lg">
             <div className="mx-auto flex w-full max-w-xl items-center justify-between rounded-xs px-4 py-2.75">
                 <div className="flex gap-2 items-center">
                     <div className="bg-amber-400 size-fit p-1.5 rounded-md text-white">

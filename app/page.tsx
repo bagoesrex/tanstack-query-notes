@@ -14,7 +14,7 @@ export default async function Home() {
                     <h1 className="text-2xl font-bold">Notes</h1>
                     <p className="text-gray-700 text-sm">Catatan belajar TanStack Query</p>
                 </div>
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-3">
                     {notes
                         .sort((a, b) => a.order - b.order)
                         .map((note) => (
